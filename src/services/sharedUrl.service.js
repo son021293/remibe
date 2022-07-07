@@ -21,7 +21,22 @@ const createSharedUrl = async (body) => {
  * @returns {Promise<QueryResult>}
  */
 const queryShareUrls = async (filter, options) => {
-  const sharedUrls = await SharedUrl.paginate(filter, options);
+  const sharedUrls = await SharedUrl.aggregate([
+    {
+      $lookup: { from: 'users', localField: 'user', foreignField: '_id', as: 'user' },
+    },
+    { $setWindowFields: { output: { totalCount: { $count: {} } } } },
+    { $skip: (options.page || 0) * 10 },
+    { $limit: 10 },
+    {
+      $project: {
+        url: 1,
+        _id: 1,
+        user: { $arrayElemAt: ['$user.email', 0] },
+        totalCount: 1,
+      },
+    },
+  ]);
   return sharedUrls;
 };
 

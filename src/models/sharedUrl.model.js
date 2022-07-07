@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { toJSON } = require('./plugins');
+const { toJSON, paginate } = require('./plugins');
 
 const sharedUrlSchema = mongoose.Schema(
   {
@@ -20,6 +20,7 @@ const sharedUrlSchema = mongoose.Schema(
 
 // add plugin that converts mongoose to json
 sharedUrlSchema.plugin(toJSON);
+sharedUrlSchema.plugin(paginate);
 
 /**
  * @typedef SharedUrl
