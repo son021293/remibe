@@ -14,8 +14,6 @@ const getSharedUrls = catchAsync(async (req, res) => {
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await sharedUrlService.queryShareUrls(filter, options);
 
-
-
   res.send(result);
 });
 
