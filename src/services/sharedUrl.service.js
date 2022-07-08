@@ -25,6 +25,7 @@ const queryShareUrls = async (filter, options) => {
     {
       $lookup: { from: 'users', localField: 'user', foreignField: '_id', as: 'user' },
     },
+    { $sort: { createdAt: -1 } },
     {
       $project: {
         url: 1,
